@@ -1,5 +1,5 @@
-const driveFolderUrl = 'https://drive.google.com/drive/u/2/folders/1-qyygiLBAEwG8_Po0dwhog-PgkVqfiWX';
-const driveFolderId = '1-qyygiLBAEwG8_Po0dwhog-PgkVqfiWX';
+const driveFolderUrl = 'https://drive.google.com/drive/u/2/folders/1nIwrwjDl2sIGVgtVCVRLeGTc22f9Pj02';
+const driveFolderId = '1nIwrwjDl2sIGVgtVCVRLeGTc22f9Pj02';
 const instagramUrl = 'https://www.instagram.com/monoralbikes/';
 const driveScope = 'https://www.googleapis.com/auth/drive.readonly';
 const defaultGoogleClientId = '728021192860-rv5fnl6clav3mbjujfqjv8vupjl2hgjc.apps.googleusercontent.com';
@@ -15,7 +15,8 @@ const photographerInstagramAccounts = new Map([
   ['松下雄一', 'yuich1hz_lc78tc'],
   ['吉田佳弘', 'yoshiyoshi_99'],
   ['内藤珠魅', 'tamalyngo'],
-  ['野上優里奈', 'yuri_camplife']
+  ['野上優里奈', 'yuri_camplife'],
+  ['斎藤大地', 'd4_goout']
 ]);
 
 let photos = [];
@@ -644,7 +645,7 @@ function generateMonoralCaption(photo) {
 }
 
 function defaultHashtags() {
-  return '#monoralbikes #monoral #焚き火台 #ミニマルキャンプ #軽量焚き火台 #microcamping #ワイヤフレーム #wireflame';
+  return '#monoralbikes #titaniumbike #titanium #allroad #gravelbike #trailriding #bikepacking';
 }
 
 function localDateTimeValue(date) {
