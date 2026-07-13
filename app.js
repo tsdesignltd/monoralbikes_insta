@@ -834,11 +834,12 @@ function render() {
           </label>
         ` : '<p class="queue-tag-unavailable">撮影者のInstagramアカウント登録なし</p>'}
         ${timing === 'scheduled' && item.scheduledAt ? `<p class="queue-timing">投稿予定: ${escapeHtml(formatScheduledAt(item.scheduledAt))}</p>` : ''}
+        ${isPosted && item.postedAt ? `<p class="queue-timing">投稿日時: ${escapeHtml(formatScheduledAt(item.postedAt))}</p>` : ''}
         ${item.error ? `<p class="queue-error">${escapeHtml(item.error)}</p>` : ''}
       </div>
       <div class="queue-actions">
         <span class="queue-state ${isPosted ? 'is-posted' : ''} ${isPosting ? 'is-posting' : ''} ${isFailed ? 'is-failed' : ''} ${isScheduled ? 'is-scheduled' : ''}">${stateText}</span>
-        <button type="button" data-queue-action="post" ${isPosted || isPosting ? 'disabled' : ''}>${isPosting ? '投稿中' : '今すぐ投稿'}</button>
+        ${isPosted ? '' : `<button type="button" data-queue-action="post" ${isPosting ? 'disabled' : ''}>${isPosting ? '投稿中' : '今すぐ投稿'}</button>`}
         <button type="button" data-queue-action="delete" class="danger-action">削除</button>
       </div>
     </article>
