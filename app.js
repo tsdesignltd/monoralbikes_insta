@@ -16,7 +16,8 @@ const photographerInstagramAccounts = new Map([
   ['吉田佳弘', 'yoshiyoshi_99'],
   ['内藤珠魅', 'tamalyngo'],
   ['野上優里奈', 'yuri_camplife'],
-  ['斎藤大地', 'd4_goout']
+  ['斎藤大地', 'd4_goout'],
+  ['ピナコ', 'pinako_cycle']
 ]);
 
 let photos = [];
