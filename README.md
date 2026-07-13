@@ -55,7 +55,7 @@ Required:
 
 - Instagramプロアカウント
 - Metaアプリ
-- Instagram Account ID: `17841403518578706`
+- Instagram Account ID: `17841452976253677`
 - `instagram_business_content_publish` を含むAccess Token
 - Meta側から取得できる公開画像URL
 
