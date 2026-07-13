@@ -809,7 +809,11 @@ function render() {
       <img src="${escapeHtml(item.src)}" alt="${escapeHtml(item.name)}">
       <div>
         <h4>${escapeHtml(item.name)}</h4>
-        <p>${escapeHtml(item.photographerName || '撮影者未設定')} / ${escapeHtml(item.type)} / ${escapeHtml(item.caption.slice(0, 48))}...</p>
+        <p>${escapeHtml(item.photographerName || '撮影者未設定')} / ${escapeHtml(item.type)}</p>
+        <label class="queue-caption-editor">
+          投稿文章
+          <textarea data-queue-caption rows="5" ${isPosted || isPosting ? 'disabled' : ''}>${escapeHtml(item.caption)}</textarea>
+        </label>
         <div class="queue-schedule">
           <label>
             投稿タイミング
@@ -840,6 +844,11 @@ function render() {
     </article>
   `;
   }).join('') : '<p class="empty-queue">採用した写真を選び、投稿案をキューに追加してください。</p>';
+
+  queueList.querySelectorAll('[data-queue-caption]').forEach((editor) => {
+    editor.style.height = 'auto';
+    editor.style.height = `${editor.scrollHeight}px`;
+  });
 
   window.requestAnimationFrame(updatePhotoGridHeight);
 }
@@ -1041,6 +1050,20 @@ addToQueue.addEventListener('click', () => {
   ];
   saveQueue();
   render();
+});
+
+queueList.addEventListener('input', (event) => {
+  if (!event.target.matches('[data-queue-caption]')) return;
+
+  const queueItem = event.target.closest('.queue-item');
+  const item = queue.find((entry) => entry.id === queueItem?.dataset.queueId);
+  if (!item || item.status === 'posted' || item.status === 'posting') return;
+
+  item.caption = event.target.value;
+  item.error = '';
+  event.target.style.height = 'auto';
+  event.target.style.height = `${event.target.scrollHeight}px`;
+  saveQueue();
 });
 
 queueList.addEventListener('change', (event) => {

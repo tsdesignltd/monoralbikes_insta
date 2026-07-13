@@ -828,6 +828,37 @@ textarea {
   font-size: 0.86rem;
 }
 
+.queue-caption-editor {
+  display: grid;
+  gap: 5px;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.queue-caption-editor textarea {
+  width: 100%;
+  min-height: 112px;
+  padding: 10px;
+  resize: vertical;
+  overflow-y: hidden;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+.queue-caption-editor textarea:disabled {
+  opacity: 1;
+  background: var(--paper);
+  color: var(--muted);
+}
+
 .queue-state {
   display: inline-flex;
   align-items: center;
