@@ -68,7 +68,7 @@ a {
   height: 100vh;
   padding: 28px 22px;
   color: #f7f5ec;
-  background: #20261f;
+  background: #292929;
   overflow: auto;
 }
 
@@ -85,7 +85,7 @@ a {
   height: 52px;
   border: 1px solid rgba(255,255,255,0.35);
   background: #f4f0e0;
-  color: #20261f;
+  color: #292929;
   font-weight: 800;
 }
 
@@ -199,7 +199,7 @@ h3 {
 .step.is-active,
 .step:hover {
   background: #f4f0e0;
-  color: #20261f;
+  color: #292929;
 }
 
 .workspace {
