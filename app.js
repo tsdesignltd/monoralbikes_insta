@@ -479,6 +479,7 @@ function mapDrivePhoto(file, photographer, folderPath) {
     mimeType: file.mimeType,
     width: file.imageMediaMetadata?.width,
     height: file.imageMediaMetadata?.height,
+    takenTime: file.imageMediaMetadata?.time || '',
     modifiedTime: file.modifiedTime,
     createdTime: file.createdTime,
     folderPath,
@@ -498,7 +499,7 @@ async function listImagesUnderFolder(folder, photographer, folderPath, visitedFo
   const [imageFiles, childFolders] = await Promise.all([
     listAllDriveFiles({
       q: `'${parentId}' in parents and mimeType contains 'image/' and trashed = false`,
-      fields: 'nextPageToken, files(id, name, mimeType, thumbnailLink, webContentLink, webViewLink, modifiedTime, createdTime, imageMediaMetadata(width, height))',
+      fields: 'nextPageToken, files(id, name, mimeType, thumbnailLink, webContentLink, webViewLink, modifiedTime, createdTime, imageMediaMetadata(width, height, time))',
       orderBy: 'modifiedTime desc'
     }),
     listAllDriveFiles({
@@ -565,6 +566,7 @@ async function syncDrivePhotos() {
       }
 
       const hasChanged = cachedPhoto.modifiedTime !== photo.modifiedTime
+        || cachedPhoto.takenTime !== photo.takenTime
         || cachedPhoto.name !== photo.name
         || cachedPhoto.folderPath !== photo.folderPath
         || cachedPhoto.photographerId !== photo.photographerId;
@@ -668,6 +670,19 @@ function formatScheduledAt(value) {
   }).format(date);
 }
 
+function formatPhotoDate(photo) {
+  const value = photo?.takenTime || photo?.createdTime || photo?.modifiedTime;
+  if (!value) return '';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+
+  return new Intl.DateTimeFormat('ja-JP', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).format(date);
+}
+
 function sortNewestFirst(photoA, photoB) {
   const timeA = new Date(photoA.modifiedTime || photoA.createdTime || 0).getTime();
   const timeB = new Date(photoB.modifiedTime || photoB.createdTime || 0).getTime();
@@ -702,8 +717,7 @@ function renderLatestByPhotographer() {
     const photoCells = folderPhotos.length ? folderPhotos.map((photo) => `
       <button class="latest-photo" type="button" data-id="${escapeHtml(photo.id)}" aria-label="${escapeHtml(`${folder.name} ${photo.name}`)}">
         <img src="${escapeHtml(photo.src)}" alt="${escapeHtml(photo.name)}">
-        <span>${escapeHtml(photo.name)}</span>
-        <small>${escapeHtml(photo.folderPath || folder.name)}</small>
+        <time>${escapeHtml(formatPhotoDate(photo))}</time>
       </button>
     `).join('') : '<p class="latest-empty">この撮影者フォルダには写真がありません。</p>';
 
@@ -740,7 +754,6 @@ function render() {
   photographerSelect.value = selectedPhotographer;
 
   photoGrid.innerHTML = visiblePhotos.length ? visiblePhotos.map((photo) => {
-    const dots = Array.from({ length: 5 }, (_, index) => `<span class="score-dot ${index < photo.score ? 'is-on' : ''}"></span>`).join('');
     return `
       <article class="photo-card ${photo.id === focusedId ? 'is-focused' : ''}" data-id="${escapeHtml(photo.id)}">
         <img src="${escapeHtml(photo.src)}" alt="${escapeHtml(photo.name)}">
@@ -748,11 +761,6 @@ function render() {
           <p class="photo-name">${escapeHtml(photo.name)}</p>
           <p class="photo-meta">${escapeHtml(photo.photographerName || '撮影者未設定')}</p>
           <p class="photo-path">${escapeHtml(photo.folderPath || '')}</p>
-          <div class="score-row" aria-label="score ${photo.score} of 5">${dots}</div>
-          <div class="card-actions">
-            <button class="keep" type="button" data-action="selected">採用</button>
-            <button class="reject" type="button" data-action="rejected">保留</button>
-          </div>
         </div>
       </article>
     `;
@@ -944,17 +952,10 @@ photoGrid.addEventListener('click', (event) => {
   const card = event.target.closest('.photo-card');
   if (!card) return;
 
-  const action = event.target.dataset.action;
   const photo = photos.find((item) => item.id === card.dataset.id);
   if (!photo) return;
 
-  if (action) {
-    photo.status = action;
-    if (action === 'selected') focusedId = photo.id;
-    scheduleDriveCatalogSave();
-  } else {
-    focusPhoto(photo.id);
-  }
+  focusPhoto(photo.id);
   render();
 });
 

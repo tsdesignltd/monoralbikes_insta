@@ -579,19 +579,13 @@ button.is-loading::before {
   background: var(--sky);
 }
 
-.latest-photo span,
-.latest-photo small,
+.latest-photo time,
 .latest-empty {
   margin: 0;
   color: var(--muted);
   font-size: 0.72rem;
   font-weight: 750;
   overflow-wrap: anywhere;
-}
-
-.latest-photo small {
-  color: #8a9188;
-  font-size: 0.66rem;
 }
 
 .empty-grid {
@@ -671,40 +665,6 @@ button.is-loading::before {
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
-}
-
-.score-row {
-  display: flex;
-  gap: 5px;
-}
-
-.score-dot {
-  width: 18px;
-  height: 6px;
-  background: var(--line);
-}
-
-.score-dot.is-on {
-  background: var(--moss);
-}
-
-.card-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-}
-
-.card-actions button {
-  min-height: 34px;
-  padding: 0 8px;
-}
-
-.keep {
-  background: #e8efe4;
-}
-
-.reject {
-  background: #f4e7df;
 }
 
 .composer {
